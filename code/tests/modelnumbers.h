@@ -17,8 +17,8 @@ int getNumber()
 class ThreadA : public ObservableThread
 {
 public:
-    explicit ThreadA(std::string id = "") :
-        ObservableThread(std::move(id))
+    explicit ThreadA(std::string id = "")
+        : ObservableThread(std::move(id))
     {
         scenarioGraph = std::make_unique<ScenarioGraph>();
         auto scenario = scenarioGraph->createNode(this, -1);
@@ -44,12 +44,11 @@ private:
     }
 };
 
-
 class ThreadB : public ObservableThread
 {
 public:
-    explicit ThreadB(std::string id = "") :
-        ObservableThread(std::move(id))
+    explicit ThreadB(std::string id = "")
+        : ObservableThread(std::move(id))
     {
         scenarioGraph = std::make_unique<ScenarioGraph>();
         auto scenario = scenarioGraph->createNode(this, -1);
@@ -78,8 +77,8 @@ private:
 class ThreadC : public ObservableThread
 {
 public:
-    explicit ThreadC(std::string id = "") :
-        ObservableThread(std::move(id))
+    explicit ThreadC(std::string id = "")
+        : ObservableThread(std::move(id))
     {
         scenarioGraph = std::make_unique<ScenarioGraph>();
         auto scenario = scenarioGraph->createNode(this, -1);
@@ -105,17 +104,18 @@ private:
     }
 };
 
-class ModelNumbers: public PcoModel
+class ModelNumbers : public PcoModel
 {
 public:
-
-    bool checkInvariants() override {
+    bool checkInvariants() override
+    {
         // For testing purpose :
         //std::cout << "Checking invariant" << std::endl;
         return true;
     }
 
-    void build() override {
+    void build() override
+    {
 #ifdef PREDEFINED_SCENARIOS
 
         threads.emplace_back(std::make_unique<ThreadA>("1"));
@@ -124,10 +124,14 @@ public:
         auto t1 = threads[0].get();
         auto t2 = threads[1].get();
         auto builder = std::make_unique<PredefinedScenarioBuilderIter>();
-        std::vector<Scenario> scenarios = {
-            {{t1, 1},{t1, 2},{t1, 3},{t2, 4},{t2, 5},{t2, 6}},
-            {{t2, 4},{t2, 5},{t2, 6},{t1, 1},{t1, 2},{t1, 3}}
-        };
+        std::vector<Scenario> scenarios
+            = {{{t1, 1}, {t1, 2}, {t1, 3}, {t2, 4}, {t2, 5}, {t2, 6}},
+               { {t2, 4},
+                 {t2, 5},
+                 {t2, 6},
+                 {t1, 1},
+                 {t1, 2},
+                 {t1, 3} }};
         builder->setScenarios(scenarios);
         scenarioBuilder = std::move(builder);
 
@@ -143,11 +147,10 @@ public:
 #endif // PREDEFINED_SCENARIOS
     }
 
-    void preRun(Scenario &/*scenario*/) override {
+    void preRun(Scenario & /*scenario*/) override {}
 
-    }
-
-    void postRun(Scenario &scenario) override {
+    void postRun(Scenario &scenario) override
+    {
         std::cout << "---------------------------------------" << std::endl;
         std::cout << "Scenario : ";
         ScenarioPrint::printScenario(scenario);
@@ -157,7 +160,8 @@ public:
 
     std::set<int> possibleNumber;
 
-    void finalReport() override {
+    void finalReport() override
+    {
         std::cout << "---------------------------------------" << std::endl;
         std::cout << "Possible output number : ";
         for (const int &value : possibleNumber)
@@ -165,7 +169,6 @@ public:
         std::cout << std::endl;
         std::cout << std::flush;
     }
-
 };
 
 #endif // MODELNUMBERS_H
