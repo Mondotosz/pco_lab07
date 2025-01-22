@@ -1,4 +1,5 @@
 
+#include "modelbarrier.h"
 #include "modelnumbers.h"
 #include "modeltemplate.h"
 #include "pcomodelchecker.h"
@@ -18,7 +19,13 @@ int main(int /*argc*/, char * /*argv*/[])
         // checker.run();
     }
     {
-        ModelNumbers model;
+        // ModelNumbers model;
+        // PcoModelChecker checker;
+        // checker.setModel(&model);
+        // checker.run();
+    }
+    {
+        ModelBarrier model;
         PcoModelChecker checker;
         checker.setModel(&model);
         checker.run();
